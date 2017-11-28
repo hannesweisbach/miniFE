@@ -64,9 +64,6 @@ perform_element_loop(const simple_mesh_description<GlobalOrdinal>& mesh,
   for(size_t i=0; iter != end; ++iter, ++i) {
     elemIDs[i] = get_id<GlobalOrdinal>(global_elems_x, global_elems_y, global_elems_z,
                                        iter.x, iter.y, iter.z);
-//#ifdef MINIFE_DEBUG
-//std::cout << "elem ID " << elemIDs[i] << " ("<<iter.x<<","<<iter.y<<","<<iter.z<<")"<<std::endl;
-//#endif
   }
 
   //Now do the actual finite-element assembly loop:
@@ -75,32 +72,21 @@ perform_element_loop(const simple_mesh_description<GlobalOrdinal>& mesh,
 
   compute_gradient_values(elem_data.grad_vals);
 
-  timer_type t_gn = 0, t_ce = 0, t_si = 0;
-  timer_type t0 = 0;
   for(size_t i=0; i<elemIDs.size(); ++i) {
     //Given an element-id, populate elem_data with the
     //element's node_ids and nodal-coords:
 
-    TICK();
     get_elem_nodes_and_coords(mesh, elemIDs[i], elem_data);
-    TOCK(t_gn);
 
     //Next compute element-diffusion-matrix and element-source-vector:
 
-    TICK();
     compute_element_matrix_and_vector(elem_data);
-    TOCK(t_ce);
 
     //Now assemble the (dense) element-matrix and element-vector into the
     //global sparse linear system:
 
-    TICK();
     sum_into_global_linear_system(elem_data, A, b);
-    TOCK(t_si);
   }
-//std::cout << std::endl<<"get-nodes: " << t_gn << std::endl;
-//std::cout << "compute-elems: " << t_ce << std::endl;
-//std::cout << "sum-in: " << t_si << std::endl;
 }
 
 }//namespace miniFE
