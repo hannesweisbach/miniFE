@@ -43,7 +43,7 @@ void
 perform_element_loop(const simple_mesh_description<GlobalOrdinal>& mesh,
                      const Box& local_elem_box,
                      MatrixType& A, VectorType& b,
-                     Parameters& /*params*/)
+                     const Parameters& /*params*/)
 {
   typedef typename MatrixType::ScalarType Scalar;
 

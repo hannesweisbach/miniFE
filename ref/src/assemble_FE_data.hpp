@@ -41,7 +41,7 @@ void
 assemble_FE_data(const simple_mesh_description<typename MatrixType::GlobalOrdinalType>& mesh,
                  MatrixType& A,
                  VectorType& b,
-                 Parameters& params)
+                 const Parameters& params)
 {
   typedef typename MatrixType::GlobalOrdinalType GlobalOrdinal;
 
